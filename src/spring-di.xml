@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+
+	<!-- DI依赖注入的方式: set方法注入 -->
+	<bean id="car" class="com.atguigu.spring.di.Car">
+		<property name="brand" value="奥迪">
+		</property>
+		<property name="crop" value="一汽"></property>
+		<property name="price" value="400000"></property>
+	</bean>
+	
+	
+	<!-- DI依赖注入的方式: 构造器的方式 
+		 index:指定参数的位置
+		 type: 指定参数的类型 
+	-->
+	<bean id="car1" class="com.atguigu.spring.di.Car">
+		<constructor-arg value="宝马" index="0"></constructor-arg>
+		<constructor-arg value="450000" index="2" type="java.lang.Double"></constructor-arg>
+		<constructor-arg value="华晨" index="1"></constructor-arg>
+	</bean>
+	
+	 <bean id="car2" class="com.atguigu.spring.di.Car">
+	 	<constructor-arg value="奔驰"></constructor-arg>
+	 	<constructor-arg value="梅赛德斯"></constructor-arg>
+	 	<constructor-arg value="300"></constructor-arg>
+	 </bean>
+	 
+	 
+	 <!-- 使用p命名空间的语法配置bean -->
+	 <bean id="car3" class="com.atguigu.spring.di.Car"
+	 	   p:brand="福特"  p:crop="长安" p:price="300000"  p:speed="260"     >
+	 </bean>
+	 
+	 
+	 <!-- 字面量
+	 	特殊字符: 
+	 		1. 使用实体.  &nbsp;
+	 				&: &amp;
+	 				<: &lt;
+	 				>: &gt;
+	 				": &quot;
+	 				':
+	 		2. <![CDATA[  写任意字符    ]]>
+	  -->
+	 <bean id="book" class="com.atguigu.spring.di.Book">
+	 	<property name="bookId">
+	 		<value>1001</value>
+	 	</property>
+	 	<!-- <property name="bookName" value="&lt;&lt;Java从入门到精通&gt;&gt;"></property> -->
+	 	<property name="bookName" >
+	 		<value> <![CDATA[& ' " > < * % $ #@  ]]>  </value>
+	 	</property>
+	 </bean>
+	 
+	 
+	 <!-- 引用其他的bean -->
+	 <bean id="person" class="com.atguigu.spring.di.Person">
+	 	<property name="id" value="101"></property>
+	 	<property name="name" value="宋老师"></property>
+	 	<property name="car"  ref="car"></property>
+	 	
+	 	<!-- 给级联属性赋值-->
+	 	<property name="car.speed" value="280"></property>
+
+	 </bean>
+	 
+	 <!-- 内部bean -->
+	 <bean id="person1" class="com.atguigu.spring.di.Person">
+	 	<property name="id" value="102"></property>
+	 	<property name="name" value="婷姐"></property>
+	 	<property name="car">
+	 		<!-- 内部bean 只能 在内部使用.  -->
+	 		<bean class="com.atguigu.spring.di.Car">
+	 			<property name="brand" value="Mini"></property>
+	 			<property name="crop" value="宝马"></property>
+	 			<property name="price" value="300000"></property>
+	 			<property name="speed" value="260"></property>
+	 		</bean>
+	 	</property>
+	 </bean>
+	 
+	 <!-- null值 -->
+	 <bean id="person2" class="com.atguigu.spring.di.Person">
+	 	<property name="id" value="103"></property>
+	 	<property name="name" value="海哥"></property>
+	 	<!-- <property name="car"><null/></property> -->
+	 </bean>
+	 
+	 <!-- List集合 -->
+	 <bean id="personList" class="com.atguigu.spring.di.PersonList">
+	 	<property name="name" value="Tom"></property>
+	 	<property name="cars" ref="listBean">
+	 		<!-- 构造集合 -->
+	 		<!-- <list>
+	 			<bean> <ref/>
+	 			<ref bean="car"/>
+	 			<ref bean="car1"/>
+	 			<ref bean="car2"/>
+	 		</list> -->
+	 		
+	 		<!-- <array></array> -->
+	 		<!-- <set></set> -->
+	 	</property>
+	 </bean>
+	 
+	 <!-- Map集合 -->
+	 <bean id="personMap" class="com.atguigu.spring.di.PersonMap">
+	 	<property name="name" value="Jerry"></property>
+	 	<property name="cars" >
+	 		<!-- 构造map -->
+	 		<map>
+				<entry key="AA"  value-ref="car"></entry>	 			
+				<entry key="BB"  value-ref="car1"></entry>
+				<entry key="CC"  value-ref="car2"></entry>
+	 		</map>
+	 	</property>
+	 </bean>
+	 
+	 <!-- 集合Bean -->
+	 <util:list id="listBean">
+	 	<ref bean="car"/>
+	 	<ref bean="car1"/>
+	 	<ref bean="car2"/>
+	 	<!-- <bean>
+	 	</bean> -->
+	 </util:list>
+	 
+</beans>

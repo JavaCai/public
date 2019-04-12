@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- 通过FactoryBean 来配置bean
+		 
+		 FactoryBean具体返回的对象是由getObject 方法来决定的。
+	 -->
+	<bean id="car" class="com.atguigu.spring.factorybean.CarFactoryBean"></bean>
+
+</beans>
